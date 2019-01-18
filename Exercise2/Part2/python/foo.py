@@ -14,22 +14,6 @@ def incrementingFunction():
     global i
     global i_Lock
     # TODO: increment i 1_000_000 times
-<<<<<<< HEAD
-    # Added new code here ----------------------------
-    for x in range(1000000):
-        i = i + 1
-    #-------------------------------------------------
-
-def decrementingFunction():
-    global i
-    # TODO: decrement i 1_000_000 times
-    # Added new code here ----------------------------
-    for x in range(1000000):
-        i = i - 1
-    # -------------------------------------------------
-
-
-=======
     i_Lock.acquire()
     for j in range(0,1000000):
         i = i + 1
@@ -43,7 +27,6 @@ def decrementingFunction():
     for j in range(0,1000001):
         i = i - 1
     i_Lock.release()
->>>>>>> Håvard
 
 def main():
     # TODO: Something is missing here (needed to print i)
@@ -53,16 +36,9 @@ def main():
     decrementing = threading.Thread(target = decrementingFunction, args = (),)
     
     # TODO: Start both threads
-<<<<<<< HEAD
-
-    incrementing.start()
-    decrementing.start()
-    
-=======
     incrementing.start()
     decrementing.start()
 
->>>>>>> Håvard
     incrementing.join()
     decrementing.join()
     
