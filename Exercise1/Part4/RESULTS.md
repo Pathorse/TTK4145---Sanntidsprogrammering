@@ -1,0 +1,1 @@
+All three languages have problems as assignment does not guarantee the value assigned is the newest value, thus shifting it over time. You can use maxprocs in go to only allow 1 processor at the time, yielding one thread running at a time, and thus no faults will occur.
