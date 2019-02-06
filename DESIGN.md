@@ -1,34 +1,34 @@
 Design Presentation
 =====================
 
-### First thoughts:
+# First thoughts:
 
 
 State machine -> Distributer -> Execute -> Driver
 
-- State machine
+## State machine
 
 En state machine som har kontroll på states
-    States:
-    Running
-    Idle
-    Emergency State (stop button pushed)
-    Variables:
-    Lastfloor
-    Currentfloor
+States:
+- Running
+- Idle
+- Emergency State (stop button pushed)
+Variables:
+- Lastfloor
+- Currentfloor
 
-- Distributer
+## Distributer
 
 Har kontroll på og deler ut ordrer
 
 
 
-- Execute 
+## Execute 
 
 Utfører ordre
 
 
-- Driver
+## Driver
 
 Utdelt
-    Kjør opp/ned osv..
+- Kjør opp/ned osv..
