@@ -43,7 +43,7 @@ In engineering and its various subdisciplines **acceptance testing** is a test c
 
 In *software testing* the ISTQB(International Software Testing Qualifications Board) defines **acceptance testing** as:
 
->>Formal testing with respect to user needs, requirements, and business processes conducted to determine whether or not a system satisfies the acceptance criteria and to enable the user, customers or other authorized entity to determine whether or not to accept the system.
+>Formal testing with respect to user needs, requirements, and business processes conducted to determine whether or not a system satisfies the acceptance criteria and to enable the user, customers or other authorized entity to determine whether or not to accept the system.
 
 
 ### Types of acceptance testing
