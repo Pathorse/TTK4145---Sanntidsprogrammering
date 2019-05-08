@@ -7,6 +7,7 @@
 1. [Topic 1 - *Fault tolerance*](#of1)
 2. [Topic 2 - *Acceptance tests*](#of2)
 3. [Topic 3 - *Real-Time Programming*](#of3)
+4. [Topic 4 - *Synchronization*](#of4)
 
 
 
@@ -102,5 +103,23 @@ Making a **upper bound of execution time** relates both to design and estimates.
     2. We can run the system at a worstcase scenario, measure time of execution and add some buffer to ensure a safe *uppder bound*.
 
 The consequences of *not being able to tell the timing* from code is terrible in a maintenance perspective, yielding the need for a re-analysis of the whole system to ensure that executions are within given time frames. An update could in the worst case lead to worse timing behaviour than previously. 
+
+
+
+<a name="of4"></a>
+## Topic 4 - Synchronization
+
+In *computer science*, **synchronization** refers to one of two distinct but related concepts: **synchronization of processes**, and **synchronization of data**.
+> **Process synchronization** refers to the idea that multiple processes are to join up or *handshake* at a certain point, in order to reach an agreement or commit to a certain sequence of action.
+> **Data synchronization** refers to the idea of keeping multiple copies of a dataset in coherence with one another, or to maintain data integrety.
+**Process synchronization** primitives are commonly used to implement **data synchronization**.
+
+### Thread or process synchronization
+**Thread synchronization** is defined as a mechanism which ensures that two or more concurrent processes or threads do not simultaneously execute some particular program segment known as *critical section*(TODO REF CONCURRENT). Processes' access to *critical section* is controlled by using synchronization techniques. When one thread start executing the *critical section* (serialized segment of the program) the other thread should wait until the first thread finishes. If proper synchronization techniques are not applied, it may cause a *race condition*(REF TODO) where the values of variables may be unpredictable and vary depending on the timings of *context switches* of the processes or threads.
+
+For example, suppose that there are three processes, namely 1,2, and 3. All three of them are concurrently executing, and they need to share a common resource(critical section) as shown in Figure 1
+
+### Notes based on answers for exam questions
+
 
 Written by Paal Arthur Schjelderup Thorseth
