@@ -8,6 +8,7 @@
 2. [Topic 2 - *Acceptance tests*](#of2)
 3. [Topic 3 - *Real-Time Programming*](#of3)
 4. [Topic 4 - *Synchronization*](#of4)
+5. [Topic 5 - *Inheritance Anomaly*](#of5)
 
 
 
@@ -139,6 +140,75 @@ Some **semaphores** would allow only one thread or process in the code section. 
 
 ### Notes based on answers for exam questions
 
+Pseudocode for task *3-1 - Exam 2017*
+```
+Semaphore mutex(1), Lefts(0), Rights(0);
+int activeThreads = 0;
+int waitingLefts = 0;
+int waitingRights = 0;
+
+void Left(){
+    wait(mutex);
+    if activeThreads == 0 && waitingRights > 0 do
+        activeThreads += 2;
+        signal(Right);
+        signal(Left);
+    end
+
+    waitingLefts++;
+    signal(mutex);
+
+    wait(Left);
+
+    wait(mutex);
+    waitingLefts--;
+    signal(mutex);
+}
+
+void Finished(){
+    wait(mutex);
+    activeThreads--;
+
+    if activeThreads == 0 && waitingLefts > 0 && waitingRights > 0 do
+        activeThreads += 2;
+        signal(Right);
+        signal(Left);
+    end
+
+    signal(mutex);
+}
+```
+Pseudocode for task *3-1 - Exam 2017*
+```
+int activeThreads = 0;
+int waitingLefts = 0;
+int waitingRights = 0;
+
+synchronized void Left(){
+    while(activeThreads > 0 && waitingRights > 0){
+        waitingLefts++;
+        wait();
+        waitingLefts--;
+    }
+    activeThreads++;
+}
+```
+A big problem with deadlock analysis is scalability, as deadlock analysis is a global analysis, and in principle every new semaphore in the system multiplies the number of states to check by 2.
+
+The **rand function** function does not work well with threads as it usually delivers the same number(often within a short time interval) or repeats sequences of 'random' numbers.
+
+Readers/writers locks are motivated by a lot of readers which overlap in execution, starving any writers.
+
+
+
+
+<a name="of5"></a>
+## Topic 5 - Inheritance Anomaly
+
+The **Inheritance Anomaly** is a failure of inheritance to be a useful mechanism for code-reuse that is caused by the addition of synchronization constructs (method guards, locks, etc) to object-oriented programming. When deriving a subclass through inheritance, the presence of synchronization code often forces method overriding on a scale much larger than when synchronization constructs are absent, to the point where there is no practical benefit to using iheritance at all.
+
+The essence of the anomaly, from a **programmers perspective**, is as follows:
+>I have a class *C* which implements some behaviour *B*. I have defined a subtype of behavior *B*, say *B**, and now I must create a new class *C'* that implements *B'*. *C** should be able to inherit from *C* to reuse the code in C. However, I am forced to redifine much of C's behaviour in writing in *C**. This re-writing is **the anomaly**, as it occurs far more often when concurrency is involved than when it is not.
 
 Written by Paal Arthur Schjelderup Thorseth
 
