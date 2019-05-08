@@ -37,12 +37,23 @@ The basic characteristics of fault tolerance require:
 
 
 <a name="of2"></a>
+## Topic 2 - Acceptance tests
+
+In engineering and its various subdisciplines **acceptance testing** is a test conducted to determine if the requirements of a specification or contract are met. 
+
+In *software testing* the ISTQB(International Software Testing Qualifications Board) defines **acceptance testing** as:
+```
+Formal testing with respect to user needs, requirements, and business processes conducted to determine whether or not a system satisfies the acceptance criteria and to enable the user, customers or other authorized entity to determine whether or not to accept the system.
+```
 
 
-
-
-
-
+### Types of acceptance testing
+- **User acceptancte testing - UAT**
+    - This may include factory acceptance testing (FAT), i.e. the teseting done by a vendor before the product or system is moved to its destination site, after which site acceptance testing (SAT) may be preformed by the users at the site.
+- **Operational acceptance testing - OAT**
+    - Also known as operational readiness testing, this refers to the chechking done to a system to ensure that processes and procedures are in place to allow the system to be used and maintained. This may include checks done to back-up facilities, procedures for disaster recovery, training for end users, maintenance procedures, and security procedures. 
+- **Contract and regulation acceptance testing**
+    - In contract acceptance testing, a system is tested against acceptance criteria as documented in a contract, before the system is accepted. In regulation acceptance testing, a system is tested to ensure it meets governmental, legal and safety standards.
 
 
 
