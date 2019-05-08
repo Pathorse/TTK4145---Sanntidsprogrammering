@@ -6,7 +6,7 @@
 ## List of topics
 1. [Topic 1 - *Fault tolerance*](#of1)
 2. [Topic 2 - *Acceptance tests*](#of2)
-
+3. [Topic 3 - *Real-Time Programming*](#of3)
 
 
 
@@ -54,9 +54,53 @@ In *software testing* the ISTQB(International Software Testing Qualifications Bo
 - **Contract and regulation acceptance testing**
     - In contract acceptance testing, a system is tested against acceptance criteria as documented in a contract, before the system is accepted. In regulation acceptance testing, a system is tested to ensure it meets governmental, legal and safety standards.
 
+### Notes based on answers for exam questions
+
+**Fault tolerance** does not require the system to be fault free. We use **acceptance testing** for detecting whether anything is wrong, not to identify *any fault*.
+
+**Learn-by-heart list from the book - Examples of what one can test for when making acceptance tests**
+- Replication checks
+- Timing checks
+- Reversal checks
+- Coding checks
+- Reasonableness checks
+- Structural checks
+- Dynamic Reasonableness checks
 
 
 
+<a name="of3"></a>
+## Topic 3 - Real-Time Programming
 
+In *computer science*, **real-time computing (RTC)**, or **reactive computing** describes hardware and software systems subject to a "real-time constraint", for example fomr event to system response. **Real-time programs** must guarantee response within specified time constraints, often referred to as "deadlines". The correctness of these types of systems depends on their temporal aspects as well as their functional aspects. **Real-time responses** are often understood to be in the order of milliseconds, and sometimes microseconds. A system not specified as operating in real time cannot usually *guarantee* a response within any timeframe, although *typical* or *expected* response times may be given.
+
+**Real-time software** may use one or more of the following:
+- *Synchronous programming languages*
+- *Real-time operating systems*
+- *Real-time networks*
+each of which provide essential frameworks on which to build a real-time software application. 
+
+System used for *mission critical* applications must be real-time, such as for control of fly-by-wire aircraft, or anti-lock brakes on a vehicle, which must produce maximum deceleration but intermittently stop braking to prevent skidding.
+
+**Real-time systems**, as well as their deadlines, are classified by the consequence of missing a deadline:
+- *Hard* - missing a deadline is a total system failure.
+- *Firm* - infrequent deadline misses are tolerable, but may degrade the system's quality of service. The usefulness of a result is zero after its deadline.
+- *Soft* - the usefulness of a result degrades after its deadline, thereby degranding the system's quality of service.
+
+### Notes based on answers for exam questions
+
+**Priorities** are very important in real-time programming to be able to reason on timing/execution behaviour of our program and/or to make schedulability proofs, we need predictability. Priorities is what make us able to predict which thread is running in any given situation.
+
+Making a **upper bound of execution time** relates both to design and estimates.
+- *Design*
+    - No recursion
+    - No algorithms with undeterminable execution time
+    - No unbounded size data structures nor dynamic datastructures at all
+    - No unbounded input data dependencies
+- *Estimation* 
+    1. Having sequences of predictable time assembly instructions enclosed by looping with known max bounds which means we can multiply and sum.
+    2. We can run the system at a worstcase scenario, measure time of execution and add some buffer to ensure a safe *uppder bound*.
+
+The consequences of *not being able to tell the timing* from code is terrible in a maintenance perspective, yielding the need for a re-analysis of the whole system to ensure that executions are within given time frames. An update could in the worst case lead to worse timing behaviour than previously. 
 
 Written by Paal Arthur Schjelderup Thorseth
