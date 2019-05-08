@@ -111,15 +111,37 @@ The consequences of *not being able to tell the timing* from code is terrible in
 
 In *computer science*, **synchronization** refers to one of two distinct but related concepts: **synchronization of processes**, and **synchronization of data**.
 > **Process synchronization** refers to the idea that multiple processes are to join up or *handshake* at a certain point, in order to reach an agreement or commit to a certain sequence of action.
+
 > **Data synchronization** refers to the idea of keeping multiple copies of a dataset in coherence with one another, or to maintain data integrety.
 **Process synchronization** primitives are commonly used to implement **data synchronization**.
 
 ### Thread or process synchronization
 **Thread synchronization** is defined as a mechanism which ensures that two or more concurrent processes or threads do not simultaneously execute some particular program segment known as *critical section*(TODO REF CONCURRENT). Processes' access to *critical section* is controlled by using synchronization techniques. When one thread start executing the *critical section* (serialized segment of the program) the other thread should wait until the first thread finishes. If proper synchronization techniques are not applied, it may cause a *race condition*(REF TODO) where the values of variables may be unpredictable and vary depending on the timings of *context switches* of the processes or threads.
 
-For example, suppose that there are three processes, namely 1,2, and 3. All three of them are concurrently executing, and they need to share a common resource(critical section) as shown in Figure 1
+For example, suppose that there are three processes, namely 1,2, and 3. All three of them are concurrently executing, and they need to share a common resource(critical section) as shown in Figure 1 ![alt text](https://github.com/Pathorse/TTK4145-Real-Time-Programming/blob/master/Images/Multiple_Processes_Accessing_the_shared_resource.png "Figure 1: Three processes accessing a shared rescource (critical section) simulataneously."). Synchronization should be used here to avoid any conflicts for accessing this shared resource. Hence, when Process 1 and 2 both try to access that resource, it should be assigned to only one process at a time. If it is assigned to Process 1, the other process (Process 2) needs to wait until Process 1 frees that resource, as shown in Figure 2 ![alt text](https://github.com/Pathorse/TTK4145-Real-Time-Programming/blob/master/Images/Shared_Resource_access_in_synchronization_environment.png "Figure 2: A process accessing a shared resource if available, based on some synchronization technique.").
+
+Another **synchronization** requirement which needs to be considered is the order in which particular process or threads should be executed. For example, we cannot board a plane until we buy a ticket. Similarly, we cannot check e-mails without validating our credentials. In the same way, an ATM will not provide any service until the correct PIN has been entered. 
+
+Other than mutual exclusion, synchronization also deals with the following:
+- **Deadlocks**, which occurs when many processes are waiting for a shared resource (critical section) which is being held by some other process. In this case, the processes just keep waiting and execute no further.
+- **Starvation**, which occurs when a process is waiting to enter the critical section, but other processes monopolize the critical section, and the first process is forced to wait indefinitely.
+- **Priority inversion**, which occurs when a high-priority process is in the critical section, and it is interrupted by a medium-priority process. This violation of priority rules can happen under certain circumstances and may lead to serious consequences in **real-time systems**.
+- **Busy waiting**, which occurs when a process frequently polls to determine if it has access to a critical section. This frequent polling robs processing time from other processes.
+
+
+### Semaphores
+**Semaphores** are signalling mechanisms which can allow one or more processes/threads to access a section. A **semaphore** has a flag which has a certain fixed value associated with it and each time a thread wishes to access the section, it decrements the flag. Similarly, when the thread leaves the section, the flag is incremented. If the flag is zero, the thread cannot access the section and gets blocked if it chooses to wait.
+
+Some **semaphores** would allow only one thread or process in the code section. Such **semaphores** are called **binary semaphore** and are very similar to **mutex**(todo referanse). I.e. if the value of **semaphore** is 1, the thread is allowed to access and if the value is 0, the access is denied.
 
 ### Notes based on answers for exam questions
 
 
 Written by Paal Arthur Schjelderup Thorseth
+
+
+### TODO
+- concurrency
+    - mutual exclusion
+    - race conditions
+    - critical section
