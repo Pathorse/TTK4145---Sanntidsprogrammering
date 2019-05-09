@@ -224,16 +224,29 @@ A **race condition** is the behavior of an electronics, software, or other syste
 
 As a simple example, let us assume that two threads want to increment the value of a global integer value by one. Ideally the following sequence of operations would take place:
 
-| Thread 1      | Thread 2      |  |Integer value  |
-| ------------- |:-------------:|--|-------------- |
+| Thread 1      | Thread 2      |    |Integer value  |
+|:-------------:|:-------------:|:--:|:--------------:|
 |   |  |  |     0        |
 | read value | | <- | 0 |
-| increase value | | | 0 |
+| *increase value* | | | 0 |
 | write back | | -> | 1 |
 | | read value | <- | 1 |
-| | increase value | | 1 |
+| | *increase value* | | 1 |
 | | write back | -> | 2 |
 
+In the case shown above, the final value is 2, as expected. However, if the two threads run simultaneously without locking or synchronization, the outcome of the operation could be wrong. The alternative sequence of operations below demonstrates this scenario:
+
+| Thread 1      | Thread 2      |    |Integer value  |
+|:-------------:|:-------------:|:--:|:--------------:|
+|   |  |  |     0        |
+| read value | | <- | 0 |
+| | read value | <- | 0 |
+| *increase value* | | | 0 |
+| | *increase value* | | 0 |
+| write back | | -> | 1 |
+| | write back | -> | 1 |
+
+In this case, the final value is 1 instead of the expected result of 2. This occurs because here the increment operations are not *mutually exclusive*. *Mutually exclusive* operations are those that cannot be interrupted while accessing some resource such as memory location.
 
 <a name="of7"></a>
 ## Topic 7 - Inheritance Anomaly
