@@ -283,6 +283,7 @@ There are around 100 threads procedures, all prefixed `pthread_` and they can be
 
 `pthread_cancel()`
 >The **pthread_cancel()** function sends a cancellation request to the thread *thread*. Whether and when the target thread reacts to the cancellation request depends on two attributes that are under the control of that thread: its cancellability *state* and *type*.
+
 When a cancellation requested is acted on, the following steps occur for *thread* (in this order):
 
 1. Cancellation clean-up handlers are popped (in the reverse of the order in which they were pushed) and called.
