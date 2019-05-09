@@ -118,6 +118,12 @@ The consequences of *not being able to tell the timing* from code is terrible in
 <a name="of4"></a>
 ## Topic 4 - Concurrency
 
+In *computer science*, **concurrency** is the ability of different parts of units of a program, algorithm, or problem to be executed out-of-order or in partial order, without affecting the final outcome. This allows for parallel execution of the concurrent units, which can significantly improve overall speed of the execution in multi-processor and multi-core systems. In more technical terms, **concurrency** refers to the decomposability property of a program, algorithm, or problem into order-independet or partially-ordered components or units.
+
+Because computations in a **concurrent system** can interact with each other while being executed, the number of possible execution paths in the system can be extremely large, and the resulting outcome can be indeterminate. **Concurrent** use of shared resources can be a source of indeterminacy leading to issues such as deadlocks, and resource starvation.
+
+>Design of concurrent systems often entails finding reliable techniques for coordinating their execution, data exchange, memory allocation, and execution scheduling to minimize response time and maximize throughput.
+
 <a name="of5"></a>
 ## Topic 5 - Synchronization
 
@@ -204,6 +210,46 @@ synchronized void Left(){
     activeThreads++;
 }
 ```
+
+Pseudocode for task *4-1 - Exam 2016*
+
+```
+# The dining savages problem
+
+int servings = 0;
+mutex = Semaphore(1);
+emptyPot = Semaphore(0);
+fullPot = Semaphore(0);
+
+# The one cook runs this code:
+while True {
+    emptyPot.wait();
+    putServingsInPot(M);
+    fullPot.signal();
+}
+
+# Any number of savages run the following code:
+while True {
+    mutex.wait();
+        if servings == 0 {
+            emptyPot.signal();
+            fullPot.wait()
+            servings = M;
+        }
+        servings--;
+        getServingFromPot();
+    mutex.signal();
+
+    eat();
+}
+```
+
+Pseudocode for task *4-2 - Exam 2016*
+
+```C
+
+```
+
 A big problem with deadlock analysis is scalability, as deadlock analysis is a global analysis, and in principle every new semaphore in the system multiplies the number of states to check by 2.
 
 The **rand function** function does not work well with threads as it usually delivers the same number(often within a short time interval) or repeats sequences of 'random' numbers.
@@ -272,9 +318,53 @@ A typical use of `setjmp`/`longjmp` is implementation of an exception mechanism 
 
 `setjmp` saves the current environment (the program state), at some point of program execution, into a platform-specific data structure, `jmp_buf`, that can be used at some later point of prorgam execution by `longjmp` to restore the program state to that saved by `jmp_buf`. This process can be imagined to be a "jump" back to the point of program execution where `setjmp` saved the environment.
 
+### POSIX Threads - pthreads
+
+**POSIX Threads**, usually referred to as **pthreads**, is an execution model that exists independently form a language, as well as a parallel execution model. It allows a program to control multiple different flows of work that overlap in time. Each flow work is referred to as a thread, and creation and control over these flows is achieved by making calls to the POSIX Threads API. 
+
+**pthreads** defines a set of **C** programming language types, functions and constants. It is implemented with a `pthread.h` header and a thread library.
+
+There are around 100 threads procedures, all prefixed `pthread_` and they can be categorized into four groups:
+- *Thread management* - creating, joining threads etc..
+- *Mutexes*
+- *Condition variables*
+- *Synchronization* between threads using read/write locks and barriers
+
+`pthread_cancel()`
+>The **pthread_cancel()** function sends a cancellation request to the thread *thread*. Whether and when the target thread reacts to the cancellation request depends on two attributes that are under the control of that thread: its cancellability *state* and *type*.
+
+When a cancellation requested is acted on, the following steps occur for *thread* (in this order):
+
+1. Cancellation clean-up handlers are popped (in the reverse of the order in which they were pushed) and called.
+2. Thread-specific data destructors are called, in an unspecified order.
+3. The thread is terminated.
+
+The above steps happens **asynchronously** with respect to the `pthread_cancel()` call; the return status of `pthread_cancel()` merely informs the caller whether the cancellation request was successfully queued.
+
 ### Ada
 
+#### Guards
+
 **Adas guards** may only test on the protected object's variables to know when to re-evaluate the guards and wake up sleeping processes.
+
+The **guards** are used to guard the entry points of the `select` statement to prevent the kinds of silly things that can happen. A **guard** is simply a *BOOLEAN* condition that must be satisfied before that particular entry point can be accepted and its logic executed. The general form of the `select` statement with **guards** is given as:
+
+```Ada
+select
+    when <BOOLEAN condition> =>
+        accept ...;     -- Complete entry point logic
+or
+    when <BOOLEAN condition> =>
+        accept ...;     -- Complete entry point logic
+or
+    when <BOOLEAN condition> =>
+        accept ...;     -- Complete entry point logic
+end select;
+```
+
+and there is no limit to the number of permissible selections, each being seperated by the reserved word `or`. In fact, one or more of the selections can have **no guard**, in which case it is similar to having a **guard** which always evaluates to *TRUE*. When the `select` statement is encountered, each of the **guards** is evaluated for *TRUE* or *FALSE*, and those conditions that evaluate to *TRUE* are allowed to enter into the active wait state for an entry, while those that have **guards** evaluating to *FALSE* are not. Those with **guards** evaluating to *FALSE* are treated as if they didn't exist for this pass through the loop. Once the **guards** are evaluated upon entering the `select` statement, they are not reevaluated until the next time the `select` statement is encountered, but remain static.
+
+#### Asynchronous transfer of control
 
 An **Ada asynchronous transfer of control** `select_statement` provides asynchronous transfer of control upon completion of an entry call or the expiration of a delay. The syntax is detailed below:
 
@@ -314,29 +404,6 @@ end select;
 ```
 
 
-### POSIX Threads - pthreads
-
-**POSIX Threads**, usually referred to as **pthreads**, is an execution model that exists independently form a language, as well as a parallel execution model. It allows a program to control multiple different flows of work that overlap in time. Each flow work is referred to as a thread, and creation and control over these flows is achieved by making calls to the POSIX Threads API. 
-
-**pthreads** defines a set of **C** programming language types, functions and constants. It is implemented with a `pthread.h` header and a thread library.
-
-There are around 100 threads procedures, all prefixed `pthread_` and they can be categorized into four groups:
-- *Thread management* - creating, joining threads etc..
-- *Mutexes*
-- *Condition variables*
-- *Synchronization* between threads using read/write locks and barriers
-
-`pthread_cancel()`
->The **pthread_cancel()** function sends a cancellation request to the thread *thread*. Whether and when the target thread reacts to the cancellation request depends on two attributes that are under the control of that thread: its cancellability *state* and *type*.
-
-When a cancellation requested is acted on, the following steps occur for *thread* (in this order):
-
-1. Cancellation clean-up handlers are popped (in the reverse of the order in which they were pushed) and called.
-2. Thread-specific data destructors are called, in an unspecified order.
-3. The thread is terminated.
-
-The above steps happens **asynchronously** with respect to the `pthread_cancel()` call; the return status of `pthread_cancel()` merely informs the caller whether the cancellation request was successfully queued.
-
 ### Java - AsynchronouslyInterruptedException
 
 The **AsynchronouslyInterruptedException** is a special exception that is thrown in response to an attempt to asynchronously transfer the locus of control of a schedulable object.
@@ -358,3 +425,5 @@ Written by Paal Arthur Schjelderup Thorseth
         - Forwards
     - Atomic actions
     - Process pairs
+- redundancy
+- Scheduling
