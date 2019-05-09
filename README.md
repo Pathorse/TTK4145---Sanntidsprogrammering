@@ -7,9 +7,11 @@
 1. [Topic 1 - *Fault tolerance*](#of1)
 2. [Topic 2 - *Acceptance tests*](#of2)
 3. [Topic 3 - *Real-Time Programming*](#of3)
-4. [Topic 4 - *Synchronization*](#of4)
-5. [Topic 5 - *Inheritance Anomaly*](#of5)
-6. [Topic 6 - *Specific language features*](#of6)
+4. [Topic 4 - *Concurrency*](#of4)
+5. [Topic 5 - *Synchronization*](#of5)
+6. [Topic 6 - *Race conditions*](#of6)
+6. [Topic 7 - *Inheritance Anomaly*](#of7)
+7. [Topic 8 - *Specific language features*](#of8)
 
 
 
@@ -36,6 +38,12 @@ The basic characteristics of fault tolerance require:
 2. **Fault isolation to the failing component** - When a failure occurs, the system must be able to isolate the failure to the offending component. This requires the addition of dedicated failure detection mechanisms that exist only for the purpose of fault isolation. Recovery of a fault condition requires classifying the fault or failing component.
 3. **Fault containment to precent propagation of the failure** - Some failure mechanisms can cause a system to fail by propagating the failure to the rest of the system.
 4. **Availability of reversion modes**
+
+### Notes based on answers for exam questions
+
+**Fault Tolerance** encompasses more than just minimizing the number of bugs in the system, it should provide a system that behaves as specified *even though* there are bugs there.
+
+Testing your system is seen as an insufficient technique for making a **fault tolerant system** as **fault tolerance** is always about being tolerant to the bug that is not (yet) discovered.
 
 
 
@@ -107,9 +115,11 @@ Making a **upper bound of execution time** relates both to design and estimates.
 The consequences of *not being able to tell the timing* from code is terrible in a maintenance perspective, yielding the need for a re-analysis of the whole system to ensure that executions are within given time frames. An update could in the worst case lead to worse timing behaviour than previously. 
 
 
-
 <a name="of4"></a>
-## Topic 4 - Synchronization
+## Topic 4 - Concurrency
+
+<a name="of5"></a>
+## Topic 5 - Synchronization
 
 In *computer science*, **synchronization** refers to one of two distinct but related concepts: **synchronization of processes**, and **synchronization of data**.
 > **Process synchronization** refers to the idea that multiple processes are to join up or *handshake* at a certain point, in order to reach an agreement or commit to a certain sequence of action.
@@ -201,10 +211,32 @@ The **rand function** function does not work well with threads as it usually del
 Readers/writers locks are motivated by a lot of readers which overlap in execution, starving any writers.
 
 
+<a name="of6"></a>
+## Topic 6 - Race conditions
+
+A **race condition** is the behavior of an electronics, software, or other system where the system's substantive behavior is dependent on the sequence or timing of other uncontrollable events. It becomes a bug when one or more of the possible behaviors is undesirable. **Race conditions** can occur especially in logic circuits, multithreaded or distributed software programs.
+
+**Race conditions** arise in software when an application depends on the sequence or timing of processes or threads to operate properly. As with electronics, there are **critical race conditions** that result in invalid execution and bugs. Critical race conditions often happen when the processes or threads depends on some shared state. Operations upon shared states are *critical sections* that must be mutually exclusive. Failure to obey this rule opens up the possibility of corrupting the shared state.
+
+**Race conditions** have a reputation of being *difficult* to reproduce and debug, since the end result is *nondeterministic* and depends on the relative timing between interfering threads. Problems occuring in production systems can therefore disappear when running in debug mode, when additional logging is added, or when attaching a debugger, often referred to as a "Heisenbug". It is therefore better to avoid **race conditions** by careful software design rather than attempting to fix them afterwards.
+
+### Example
+
+As a simple example, let us assume that two threads want to increment the value of a global integer value by one. Ideally the following sequence of operations would take place:
+
+| Thread 1      | Thread 2      |  |Integer value  |
+| ------------- |:-------------:|--|-------------- |
+|   |  |  |     0        |
+| read value | | <- | 0 |
+| increase value | | | 0 |
+| write back | | -> | 1 |
+| | read value | <- | 1 |
+| | increase value | | 1 |
+| | write back | -> | 2 |
 
 
-<a name="of5"></a>
-## Topic 5 - Inheritance Anomaly
+<a name="of7"></a>
+## Topic 7 - Inheritance Anomaly
 
 The **Inheritance Anomaly** is a failure of inheritance to be a useful mechanism for code-reuse that is caused by the addition of synchronization constructs (method guards, locks, etc) to object-oriented programming. When deriving a subclass through inheritance, the presence of synchronization code often forces method overriding on a scale much larger than when synchronization constructs are absent, to the point where there is no practical benefit to using iheritance at all.
 
@@ -214,8 +246,8 @@ The essence of the anomaly, from a **programmers perspective**, is as follows:
 
 
 
-<a name="of6"></a>
-## Topic 6 - Spesific language features
+<a name="of8"></a>
+## Topic 8 - Spesific language features
 
 ### C - setjmp.h
 **setjmp.h is a header defined in the C standard library to provide "non-local jumps": 
