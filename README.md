@@ -234,8 +234,6 @@ A typical use of `setjmp`/`longjmp` is implementation of an exception mechanism 
 An **Ada asynchronous transfer of control** `select_statement` provides asynchronous transfer of control upon completion of an entry call or the expiration of a delay. The syntax is detailed below:
 
 ```Ada
-asynchronous_select::=
-
 select
     triggering_alternative
 then abort
