@@ -195,7 +195,7 @@ void Finished(){
     signal(mutex);
 }
 ```
-Pseudocode for task *3-1 - Exam 2017*
+Pseudocode for task *3-2 - Exam 2017*
 ```
 int activeThreads = 0;
 int waitingLefts = 0;
@@ -244,10 +244,48 @@ while True {
 }
 ```
 
-Pseudocode for task *4-2 - Exam 2016*
+Pseudocode for task *4-2 - Exam 2016* - **Java**
 
-```C
+```Java
+class Pot {
+    private unsigned int servings = 3;
+    private bool awakenCook = false;
 
+    synchronized void eat () {
+        if (servings > 0) {
+            servings--;
+        }
+        else {
+            awakenCook = true;
+            notifyAll();
+            while (awakenCook) {
+                wait();
+            }
+            servings--;
+        }
+    }
+
+    synchronized void cook() {
+        while (!awakenCook) {
+            wait();
+        }
+        servings = 3;
+        awakenCook = False();
+        notifyAll();
+    }
+}
+```
+
+Pseudocode for task *4-3 - Exam 2016* - **Ada**
+
+```Ada
+Protected Object Pot:
+    private unsigned int servings = 3;
+    entry eat when servings > 0:
+        servings = servings - 1;
+    
+    entry cook when servings == 0:
+        servings = 3;
 ```
 
 A big problem with deadlock analysis is scalability, as deadlock analysis is a global analysis, and in principle every new semaphore in the system multiplies the number of states to check by 2.
@@ -427,3 +465,4 @@ Written by Paal Arthur Schjelderup Thorseth
     - Process pairs
 - redundancy
 - Scheduling
+- Transition diagrams
