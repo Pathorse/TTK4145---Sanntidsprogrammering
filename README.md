@@ -262,8 +262,8 @@ select
     delay 5.0;
     Put_Line("Calculation does not converge");
 then abort
-    -- This calculation should finish in 5.0 seconds;
-    -- if not, it is assumed to diverge.
+    -- This calculation should finish in 5.0 seconds
+    -- if not, it is assumed to diverge
     Horribly_complicated_Recursive_Function(X,Y);
 end select;
 ```
@@ -291,6 +291,12 @@ When a cancellation requested is acted on, the following steps occur for *thread
 
 The above steps happens **asynchronously** with respect to the `pthread_cancel()` call; the return status of `pthread_cancel()` merely informs the caller whether the cancellation request was successfully queued.
 
+### Java - AsynchronouslyInterruptedException
+
+The **AsynchronouslyInterruptedException** is a special exception that is thrown in response to an attempt to asynchronously transfer the locus of control of a schedulable object.
+
+A schedulable object that is executing a method or constructor, which is declared with an **AsynchronouslyInterruptedException** in its `throws` clause, can be asynchronously interrupted except when it is executing in the lexical scope of a synchronized statement within that method/constructor. As soon as the schedulable object leaves the lexical scope of the method by calling another method/constructor it may be asynchronously interrupted if the called method/constructor is asynchronously interruptible.
+
 Written by Paal Arthur Schjelderup Thorseth
 
 
@@ -304,7 +310,5 @@ Written by Paal Arthur Schjelderup Thorseth
     - Error recovery
         - Backwards
         - Forwards
-    - select then abort ADA
-    - AsynchrouneslyInterruptedExceptions Java
     - Atomic actions
     - Process pairs
