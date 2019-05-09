@@ -9,6 +9,7 @@
 3. [Topic 3 - *Real-Time Programming*](#of3)
 4. [Topic 4 - *Synchronization*](#of4)
 5. [Topic 5 - *Inheritance Anomaly*](#of5)
+6. [Topic 6 - *Specific language features*](#of6)
 
 
 
@@ -208,7 +209,89 @@ Readers/writers locks are motivated by a lot of readers which overlap in executi
 The **Inheritance Anomaly** is a failure of inheritance to be a useful mechanism for code-reuse that is caused by the addition of synchronization constructs (method guards, locks, etc) to object-oriented programming. When deriving a subclass through inheritance, the presence of synchronization code often forces method overriding on a scale much larger than when synchronization constructs are absent, to the point where there is no practical benefit to using iheritance at all.
 
 The essence of the anomaly, from a **programmers perspective**, is as follows:
->I have a class *C* which implements some behaviour *B*. I have defined a subtype of behavior *B*, say *B**, and now I must create a new class *C'* that implements *B'*. *C** should be able to inherit from *C* to reuse the code in C. However, I am forced to redifine much of C's behaviour in writing in *C**. This re-writing is **the anomaly**, as it occurs far more often when concurrency is involved than when it is not.
+>I have a class *C* which implements some behaviour *B*. I have defined a subtype of behavior *B*, say *B**, and now I must create a new class *C** that implements *B**. *C** should be able to inherit from *C* to reuse the code in C. However, I am forced to redifine much of C's behaviour in writing in *C**. This re-writing is **the anomaly**, as it occurs far more often when concurrency is involved than when it is not.
+
+
+
+
+<a name="of6"></a>
+## Topic 6 - Spesific language features
+
+### C - setjmp.h
+**setjmp.h is a header defined in the C standard library to provide "non-local jumps": 
+>Control flow that deviates from the usual subroutine call and return sequence.
+
+The complementary functions `setjmp` and `longjmp` provide this functionality. 
+
+A typical use of `setjmp`/`longjmp` is implementation of an exception mechanism that exploits the ability of `longjmp` to reestablish program or thread state, even across multiple levels of function calls. A less common use of `setjmp` is to create syntax similar to coroutines.
+
+`setjmp` saves the current environment (the program state), at some point of program execution, into a platform-specific data structure, `jmp_buf`, that can be used at some later point of prorgam execution by `longjmp` to restore the program state to that saved by `jmp_buf`. This process can be imagined to be a "jump" back to the point of program execution where `setjmp` saved the environment.
+
+### Ada
+
+**Adas guards** may only test on the protected object's variables to know when to re-evaluate the guards and wake up sleeping processes.
+
+An **Ada asynchronous transfer of control** `select_statement` provides asynchronous transfer of control upon completion of an entry call or the expiration of a delay. The syntax is detailed below:
+
+```Ada
+asynchronous_select::=
+
+select
+    triggering_alternative
+then abort
+    abortable_part
+end select;
+```
+
+Examples:
+
+```Ada
+loop
+    select
+        Terminal.Wait_For_Interrupt;
+        Put_Line("Interrupted");
+    then abort
+        -- This will be abandoned upon terminal interrupt
+        Put_Line("-> ");
+        Get_Line(Command, Last);
+        Process_Command(Command(1..Last));
+    end select;
+end loop;
+```
+
+```Ada
+select
+    delay 5.0;
+    Put_Line("Calculation does not converge");
+then abort
+    -- This calculation should finish in 5.0 seconds;
+    -- if not, it is assumed to diverge.
+    Horribly_complicated_Recursive_Function(X,Y);
+end select;
+```
+
+
+### POSIX Threads - pthreads
+
+**POSIX Threads**, usually referred to as **pthreads**, is an execution model that exists independently form a language, as well as a parallel execution model. It allows a program to control multiple different flows of work that overlap in time. Each flow work is referred to as a thread, and creation and control over these flows is achieved by making calls to the POSIX Threads API. 
+
+**pthreads** defines a set of **C** programming language types, functions and constants. It is implemented with a `pthread.h` header and a thread library.
+
+There are around 100 threads procedures, all prefixed `pthread_` and they can be categorized into four groups:
+- *Thread management* - creating, joining threads etc..
+- *Mutexes*
+- *Condition variables*
+- *Synchronization* between threads using read/write locks and barriers
+
+`pthread_cancel()`
+>The **pthread_cancel()** function sends a cancellation request to the thread *thread*. Whether and when the target thread reacts to the cancellation request depends on two attributes that are under the control of that thread: its cancellability *state* and *type*.
+When a cancellation requested is acted on, the following steps occur for *thread* (in this order):
+
+1. Cancellation clean-up handlers are popped (in the reverse of the order in which they were pushed) and called.
+2. Thread-specific data destructors are called, in an unspecified order.
+3. The thread is terminated.
+
+The above steps happens **asynchronously** with respect to the `pthread_cancel()` call; the return status of `pthread_cancel()` merely informs the caller whether the cancellation request was successfully queued.
 
 Written by Paal Arthur Schjelderup Thorseth
 
@@ -218,3 +301,12 @@ Written by Paal Arthur Schjelderup Thorseth
     - mutual exclusion
     - race conditions
     - critical section
+    - optimistic concurrency control
+        - we assume that interleaving threads under preemptive scheduling does no damage; then use fault tolerance to handle it when it happens anyways.
+    - Error recovery
+        - Backwards
+        - Forwards
+    - select then abort ADA
+    - AsynchrouneslyInterruptedExceptions Java
+    - Atomic actions
+    - Process pairs
