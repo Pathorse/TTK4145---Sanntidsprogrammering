@@ -13,7 +13,8 @@
 7. [Topic 7 - *Inheritance Anomaly*](#of7)
 8. [Topic 8 - *Priority ceiling protocol*](#of8)
 9. [Topic 9 - *Scheduling*](#of9)
-10. [Topic 10 - *Specific language features*](#of10)
+10. [Topic 10 - *Redundancy*](#of10)
+11. [Topic 11 - *Specific language features*](#of11)
 
 
 
@@ -437,7 +438,28 @@ The main purposes of **scheduling algorithms** are to minimize *resource starvat
     - A **work-conserving scheduler** is a scheduler that always tries to keep the scheduled resources busy, if there are submitted jobs ready to be scheduled.
 
 <a name="of10"></a>
-## Topic 10 - Spesific language features
+## Topic 10 - Redundancy
+
+### Redundancy (engineering)
+
+In *engineering*, **redundacy** is the duplication of *critical components* or *functions* of a system with the intention of increasing reliability of the system, usually in the form of a *backup* or *fail-safe*, or to improve actual *system performance*, such as in the case of GNSS receivers, or **multi-threaded computer processing**. An redundancy example is shown below:
+
+![alt text](https://github.com/Pathorse/TTK4145-Real-Time-Programming/blob/master/Images/1024px-Reliability_block_diagram.png "Redundant subsystem B")
+
+
+
+### Redundant code
+
+In *computer programming*, **redudant code** is source code or compiled code in a *computer program* that is unnecessary, such as:
+
+- recomputing a value that has previously been calculated and is still available.
+- code that is never executed (known as unreachable code)
+- code which is executed but has no external effect (e.g. does not change the output produced by a program; known as dead code)
+
+
+
+<a name="of11"></a>
+## Topic 11 - Spesific language features
 
 ### C - setjmp.h
 **setjmp.h is a header defined in the C standard library to provide "non-local jumps": 
@@ -546,7 +568,6 @@ Written by Paal Arthur Schjelderup Thorseth
 
 ### TODO
 - concurrency
-    - mutual exclusion
     - race conditions
     - optimistic concurrency control
         - we assume that interleaving threads under preemptive scheduling does no damage; then use fault tolerance to handle it when it happens anyways.
