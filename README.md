@@ -29,7 +29,6 @@ A system with high **failure transparency** will alert users that a component fa
 
 Within the scope of an *individual system*, fault tolerance can be achieved by anticipating exceptional conditions and building the system to cope with them, and, in general, aiming for **self-stabilization** so that the system converges towards an error-free state. However, if the consequences of a system failure are catastrophic, or the cost of making it sufficiently reliable is very high, a better solution may be to use some form of duplication. In any case, if the consequence of a system failure is so catastrophic, the system must be able to use reversion to fall back to a safe mode.
 
-
 Below you find a number of choices to be examined to determine which components should be fault tolerant:
 - **How critical is the component?** In a car, the radio is not critical, so this component has less need for fault tolerance.
 - **How likely is the component to fail?** Some components, like the drive shaft in a car, are not likely to fail, so no fault tolerance is needed.
@@ -47,7 +46,6 @@ The basic characteristics of fault tolerance require:
 **Fault Tolerance** encompasses more than just minimizing the number of bugs in the system, it should provide a system that behaves as specified *even though* there are bugs there.
 
 Testing your system is seen as an insufficient technique for making a **fault tolerant system** as **fault tolerance** is always about being tolerant to the bug that is not (yet) discovered.
-
 
 
 <a name="of2"></a>
