@@ -509,6 +509,15 @@ The above steps happens **asynchronously** with respect to the `pthread_cancel()
 
 ### Ada
 
+#### Synchronization primatives
+A protected object is a module, a collection of functions, procedures and entries along with a set of variables.
+
+- **Functions** are read only, and can therefore be called concurrently by many tasks, but not concurrently with procedures and entries.
+
+- **Procedures** may make changes to the state of the object, and will therefore run under mutual exclusion with other tasks.
+
+- **Entries** are protected by guards - boolean tests - so that if the test fails, the entry will not be callable - the caller will block waiting for the guard to become *TRUE*. These tests can only be formulated using the object's private variables.
+
 #### Guards
 
 **Adas guards** may only test on the protected object's variables to know when to re-evaluate the guards and wake up sleeping processes.
