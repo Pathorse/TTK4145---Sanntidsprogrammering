@@ -446,7 +446,20 @@ In *engineering*, **redundacy** is the duplication of *critical components* or *
 
 ![alt text](https://github.com/Pathorse/TTK4145-Real-Time-Programming/blob/master/Images/1024px-Reliability_block_diagram.png "Redundant subsystem B")
 
+#### Forms of redundancy
+In *computer science*, there are **four major forms of redundancy**, these are:
 
+- **Hardware redundancy**, such as dual modular redundancy and triple modular redundancy.
+
+- **Information redundancy**, such as *error detection and correction* methods
+
+- **Time redundancy**, performing the same operation multiple times such as multiple executions of a program or multiple copies of data transmitted.
+
+- **Software redundancy**, such as *N-version programming*.
+
+### Data redundancy
+
+In *computer main memory, auxiliary storage and computer buses*, **data redundancy** is the existence of data that is additional to the actual data and permits correction of errors in stored or transmitted data. The additional data can simply be a complete copy of the actual data, or only selected pieces of data that allow detection of errors and reconstruction of lost or damaged data up to a certain level.
 
 ### Redundant code
 
@@ -576,5 +589,4 @@ Written by Paal Arthur Schjelderup Thorseth
         - Forwards
     - Atomic actions
     - Process pairs
-- redundancy
 - Transition diagrams
