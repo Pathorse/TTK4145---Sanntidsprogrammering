@@ -151,6 +151,19 @@ x = 3 + z;    // instruction executes at time = Tx
 
 In cases like these, a critical sextion is important. In the above case, if **A** needs to read the updated value of **x**, executing Process **A** and Process **B** at the same time may not give required results. To prevent this, variable `x` is protected by a critical sextion. First, **B** gets the access to the section. Once **B** finishes writing the value, **A** gets the access to the critical section and variable `x` can be read.
 
+![alt text](https://github.com/Pathorse/TTK4145-Real-Time-Programming/blob/master/Images/Critical_section_fg.jpg "Figure 1: Flow graph depiciting need for critical section.").
+
+#### Implementation of critical sections
+
+The implementation of **critical sections** vary among different operating systems.
+
+A **critical sections** will usually terminate in finite time, and a thread, task, or process will have to wait for a fixed time to enter it (**bounded waiting**). To ensure exclusive use of critical sections some synchronization mechanism is required at the entry and exit of the program.
+
+**Critical section** is a piece of the program that requires **mutual exclusion** of access.
+
+![alt text](https://github.com/Pathorse/TTK4145-Real-Time-Programming/blob/master/Images/Locks_and_critical_sections.jpg "Figure 2: Locks and critical sections in multiple threads.").
+
+As shown in Figure 2, in the case of **mutual exclusion** (mutex), one threads blocks a **critical section** by using locking techniques when it needs to access the shared resource and other threads have to wait to get their turn to enter into the section. This prevents conflicts when two or more threads share the same memory space and want to access a common resource.
 
 
 <a name="of5"></a>
