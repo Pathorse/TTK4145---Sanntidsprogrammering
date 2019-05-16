@@ -10,9 +10,10 @@
 4. [Topic 4 - *Concurrency*](#of4)
 5. [Topic 5 - *Synchronization*](#of5)
 6. [Topic 6 - *Race conditions*](#of6)
-6. [Topic 7 - *Inheritance Anomaly*](#of7)
-6. [Topic 8 - *Priority ceiling protocol*](#of8)
-7. [Topic 9 - *Specific language features*](#of9)
+7. [Topic 7 - *Inheritance Anomaly*](#of7)
+8. [Topic 8 - *Priority ceiling protocol*](#of8)
+9. [Topic 9 - *Scheduling*](#of9)
+10. [Topic 10 - *Specific language features*](#of10)
 
 
 
@@ -387,11 +388,47 @@ The essence of the anomaly, from a **programmers perspective**, is as follows:
 <a name="of8"></a>
 ## Topic 8 - Priority ceiling protocol
 
-In **real-time computing**, the **priority ceiling protocol** is a synchronization protocol for *shared resources* to avoid unbounded **priority inversion** and mutual **deadlock** due to wrong nesting of critical sections
+In **real-time computing**, the **priority ceiling protocol** is a synchronization protocol for *shared resources* to avoid unbounded **priority inversion** and mutual **deadlock** due to wrong nesting of critical sections. In this protocol each resource is assigned a **priority ceiling**, which is a priority equal to the highest priority of *any task* which may lock the resource. The protocol works by *temporarily raising* the priorities of tasks in certain situations, thus it requires a **scheduler** that supports **dynamic priority scheduling**.
 
 
 <a name="of9"></a>
-## Topic 9 - Spesific language features
+## Topic 9 - Scheduling
+
+In **computing**, **scheduling** is the method by which work is assigned to resources that complete the work. The work may be virtual computation elements such as *threads*, *processes* or *data flows*, which are in turn scheduled onto hardware resources such as processors, network links, or expansion cards.
+
+A **scheduler** is what carries out the **scheduling** activity. **Schedulers** are often implemented so they keep all computer resources busy (as in load balancing), allow multiple users to share system resources effectively, or to achieve a target quality of service. **Scheduling** is fundamental to computation itself, and an intrisic part of the *execution model* of a computer system; the concept of **scheduling** makes it possible to have computer **multitasking** with a single CPU. 
+
+### Scheduling disciplines
+
+**Scheduling disciplines** are algorithms used for distributing resources amoong parties which simultaneously and asynchronously request them.
+
+The main purposes of **scheduling algorithms** are to minimize *resource starvation* and to *ensure fairness* among the parties utilizing the resources. **Scheduling** deals with the problem of deciding which of the outstading requests is to be allocated resources. There are many different **scheduling algorithms**. Below, we introduce several of them.
+
+- **First come, first served**
+    - *First in, first out* (FIFO), also known as *first come, first served* (FCFS), is the simplest scheduling algorithm. **FIFO** simply queues processes in the order that they arrive in the ready queue. This is commonly used for a **task queue**, as illustrated below.
+
+![alt text](https://github.com/Pathorse/TTK4145-Real-Time-Programming/blob/master/Images/1024px-Thread_pool.svg.png "A sample thread pool (green boxes) with a queue (FIFO) of waiting tasks (blue) and a queue of completed tasks (yellow)")
+
+- **Priority scheduling**
+    - Earliest deadline first (EDF) or *least time* to go is a **dynamic scheduling algorithm** used in **real-time operating systems** to place processes in a priority queue. Whenever a scheduling event occurs (a task finishes, new task is released, etc.), the queue will be searched for the process closest to its deadline, which will be the next to be scheduled for execution.
+
+- **Shortest remaining time first**
+    - Similar to *shortest job first* (SFJ). With this strategy the scheduler arranges processes with the least estimated processing time remaining to be next in the queue. This *requires advanced knowledge* or *estimations* about the time required for a process to complete.
+
+- **Fixed priority pre-emptive scheduling**
+    - The operating system assigns a fixed priority rank to every process, and the **scheduler** arranges the processes in the ready queue in order of their priority. Lower-priority processes get interrupted by incoming higher-priority processes.
+
+- **Round-robin scheduling**
+    - The **scheduler** assigns a fixed time unit per process, and cycles through them. If process completes within that time-slice it gets terminated otherwise it is rescheduled after giving a chance to all other processes.
+
+- **Multilevel queue scheduling**
+    - This is used for situations which processes are easily divided into different groups. For example, a common division is made between foreground (interactive) processes and background (batch) processes. These two types of processes have different response time requirements and so may have different **scheduling** needs. It is *very useful* for shared memory problems.
+
+- **Work-conserving schedulers**
+    - A **work-conserving scheduler** is a scheduler that always tries to keep the scheduled resources busy, if there are submitted jobs ready to be scheduled.
+
+<a name="of10"></a>
+## Topic 10 - Spesific language features
 
 ### C - setjmp.h
 **setjmp.h is a header defined in the C standard library to provide "non-local jumps": 
@@ -502,7 +539,6 @@ Written by Paal Arthur Schjelderup Thorseth
 - concurrency
     - mutual exclusion
     - race conditions
-    - critical section
     - optimistic concurrency control
         - we assume that interleaving threads under preemptive scheduling does no damage; then use fault tolerance to handle it when it happens anyways.
     - Error recovery
@@ -511,5 +547,4 @@ Written by Paal Arthur Schjelderup Thorseth
     - Atomic actions
     - Process pairs
 - redundancy
-- Scheduling
 - Transition diagrams
