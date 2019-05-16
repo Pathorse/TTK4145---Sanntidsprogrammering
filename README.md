@@ -11,7 +11,8 @@
 5. [Topic 5 - *Synchronization*](#of5)
 6. [Topic 6 - *Race conditions*](#of6)
 6. [Topic 7 - *Inheritance Anomaly*](#of7)
-7. [Topic 8 - *Specific language features*](#of8)
+6. [Topic 8 - *Priority ceiling protocol*](#of8)
+7. [Topic 9 - *Specific language features*](#of9)
 
 
 
@@ -115,6 +116,8 @@ Making a **upper bound of execution time** relates both to design and estimates.
 The consequences of *not being able to tell the timing* from code is terrible in a maintenance perspective, yielding the need for a re-analysis of the whole system to ensure that executions are within given time frames. An update could in the worst case lead to worse timing behaviour than previously. 
 
 
+We can prove that deadlines in a system will be satisfied by doing a **response time analysis**, that is for each thread we can calculate its worst case **response time** from its max execution time and the number of times it can be interrupted by higher-priority threads. Further **utilization-based schedulability tests** are needed. This test is bsed on a formula which guarantees schedulability for **N** threads if the threads have *rate-monotonic priorities* and the sum of **utilizations** are less than a given number (dependent only on **N**).
+
 <a name="of4"></a>
 ## Topic 4 - Concurrency
 
@@ -123,6 +126,32 @@ In *computer science*, **concurrency** is the ability of different parts of unit
 Because computations in a **concurrent system** can interact with each other while being executed, the number of possible execution paths in the system can be extremely large, and the resulting outcome can be indeterminate. **Concurrent** use of shared resources can be a source of indeterminacy leading to issues such as deadlocks, and resource starvation.
 
 >Design of concurrent systems often entails finding reliable techniques for coordinating their execution, data exchange, memory allocation, and execution scheduling to minimize response time and maximize throughput.
+
+### Critical section
+
+In **concurrent programming**, concurrent accesses to *shared resources* can lead to unexpected or erroneous behavior, so parts of the program where the *shared resource* is accessed are protected. This protected section is the **critical section**. It cannot be executed by more than one process at a time. Typically, the **critical section** accesses a shared resource, such as a data structure, a peripheral device, or a network connection, that would not operate correctly in the context of multiple **concurrent** accesses.
+
+Different codes or processes may consist of the same variable or other resources that need to be read or written but whose results depend on the order in which the actions occur. For example, if a variable `x` is to be read by process **A**, and process **B** has to write to the same variable `x` at the same time, process **A** might get either the old or new value of `x`:
+
+```
+// Process A
+.
+.
+b = x + 5;    // instruction executes at time = Tx
+.
+```
+
+```
+// Process B
+.
+.
+x = 3 + z;    // instruction executes at time = Tx
+.
+```
+
+In cases like these, a critical sextion is important. In the above case, if **A** needs to read the updated value of **x**, executing Process **A** and Process **B** at the same time may not give required results. To prevent this, variable `x` is protected by a critical sextion. First, **B** gets the access to the section. Once **B** finishes writing the value, **A** gets the access to the critical section and variable `x` can be read.
+
+
 
 <a name="of5"></a>
 ## Topic 5 - Synchronization
@@ -342,9 +371,14 @@ The essence of the anomaly, from a **programmers perspective**, is as follows:
 
 
 
-
 <a name="of8"></a>
-## Topic 8 - Spesific language features
+## Topic 8 - Priority ceiling protocol
+
+In **real-time computing**, the **priority ceiling protocol** is a synchronization protocol for *shared resources* to avoid unbounded **priority inversion** and mutual **deadlock** due to wrong nesting of critical sections
+
+
+<a name="of9"></a>
+## Topic 9 - Spesific language features
 
 ### C - setjmp.h
 **setjmp.h is a header defined in the C standard library to provide "non-local jumps": 
