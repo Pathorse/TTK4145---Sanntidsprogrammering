@@ -47,7 +47,6 @@ The basic characteristics of fault tolerance require:
 
 Testing your system is seen as an insufficient technique for making a **fault tolerant system** as **fault tolerance** is always about being tolerant to the bug that is not (yet) discovered.
 
-
 <a name="of2"></a>
 ## Topic 2 - Acceptance tests
 
