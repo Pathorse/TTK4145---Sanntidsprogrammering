@@ -14,7 +14,8 @@
 8. [Topic 8 - *Priority ceiling protocol*](#of8)
 9. [Topic 9 - *Scheduling*](#of9)
 10. [Topic 10 - *Redundancy*](#of10)
-11. [Topic 11 - *Specific language features*](#of11)
+11. [Topic 11 - *Code complete checklist*](#of11)
+12. [Topic 12 - *Specific language features*](#of12)
 
 
 
@@ -326,6 +327,44 @@ class Pot {
 }
 ```
 
+Pseudocode for task *1-4 - Exam 2015 Kont* - **Java**
+
+```Java
+class read_write_functions {
+    private bool writing = false;
+    private int readers = 0;
+
+    synchronized void startWrite(){
+        while (writing && readers > 0) {
+            wait();
+        }
+        writing = true
+    }
+
+    synchronized void stopWrite(){
+        writing = false;
+        notifyAll();
+    }
+
+    synchronized void startRead(){
+        while (writing == true) {
+            // print value here or do whatever u wanna do
+            wait();
+        }
+        readers++;
+    }
+
+    synchronized void stopRead(){
+        readers--;
+        if (readers == 0){
+            notifyAll();
+        }
+    }
+}
+
+```
+
+
 Pseudocode for task *4-3 - Exam 2016* - **Ada**
 
 ```Ada
@@ -467,9 +506,55 @@ In *computer programming*, **redudant code** is source code or compiled code in 
 - code which is executed but has no external effect (e.g. does not change the output produced by a program; known as dead code)
 
 
-
 <a name="of11"></a>
-## Topic 11 - Spesific language features
+## Topic 11 - Code complete checklist
+
+### Abstract Data Types
+
+- Have you thought of the classes in your program as abstract data types and evaluated their interfaces from that point of view?
+
+### Abstraction
+
+- Does the class have a central purpose?
+- Is the class well named, and does its name describe its central purpose?
+- Does the class's interface present a consistent abstraction?
+- Does the class's interface make obvious how you should use the class?
+- Is the class's interface abstract enough that you dont have to think about how its services are implemented? Can you treat the class as a black box?
+- Are the class's services complete enough that other classes don't have to meddle with its internal data?
+- Has unrelated information been moved out of the class?
+- Have you thought about subdiving the class into component classes, and have you subdivided it as much as you can?
+- Are you preserving the integrity of the class's interface as you modify the class?
+
+### Encapsulation
+
+- Does the class minimize accessibility to its members?
+- Does the class avoid exposing member data?
+- Does the class hide its implementation details fomr other classes as much as the programming language permits?
+- Does the class avoid making assumptions about its users, including its derived classes?
+- Is the class independent of other classes? Is it loosely coupled?
+
+### Inheritance
+
+- Is inheritance used only to mmodel "is a" relationships-that is, do dervied classes adhere to the Liskov Substitution Principlce?
+- Does the class documentation describe the inheritance strategy?
+- Do derived classes avoid "overriding" non-overridable routines?
+- Are common interfaces, data, and behavior as high as possible in the inheritance tree?
+- Are inheritance trees fairly shallow?
+- Are all data members in the base class private rather than protected?
+
+### Other implementation Issues
+- Does the class contain about seven data members of fewer?
+- Does the class minimize direct and indirect routine calls to other classes?
+- Does the class collaborate with other classes only to the extent absolutely necessary?
+- Is all member data initialized in the constructor?
+- Is the class designed to be used as deep copies rather than shallow copies unless there's a measured reasion to create shallow copies?
+
+### Language-Specific Issues
+
+- Have you investigated the language-specific issuses for classes in your specific programming language?
+
+<a name="of12"></a>
+## Topic 12 - Spesific language features
 
 ### C - setjmp.h
 **setjmp.h is a header defined in the C standard library to provide "non-local jumps": 
@@ -585,6 +670,9 @@ A schedulable object that is executing a method or constructor, which is declare
 Written by Paal Arthur Schjelderup Thorseth
 
 
+
+
+
 ### TODO
 - concurrency
     - race conditions
@@ -596,3 +684,99 @@ Written by Paal Arthur Schjelderup Thorseth
     - Atomic actions
     - Process pairs
 - Transition diagrams
+
+
+
+## Exam examples
+
+```C
+mutex = Semaphore(1);
+mutex = Semaphore(1);
+int boarders = 0;
+int unboarders = 0;
+boardQueue = Semaphore(0);
+unboardQueue = Semaphore(0);
+allAboard = Semaphore(0);
+allAshore = Semaphore(0);
+
+void car_thread(){
+    load();
+    boardQueue.signal(C);
+    allAboard.wait();
+
+    run()
+
+    unload();
+    unboardQueue.signal(C);
+    allAshore.wait();
+}
+
+
+void passenger_thread(){
+    boardQueue.wait();
+    board();
+
+    mutex.wait()
+        boarders += 1;
+        if boarders == C:
+            allAboard.signal();
+            boarders = 0;
+    mutex.signal()
+
+    unboardQueue.wait();
+    unboard()
+
+    mutex2.wait()
+        unboarders += 1
+        if unboarders == C:
+            allAshore.signal();
+            unboarders = 0;
+    mutex2.signal();
+}
+```
+
+
+```Java
+class Rollercoaster
+{
+    private int waitingToBoard;
+    private bool boarding;
+
+    Rollercoaster(){
+        waitingToBoard = 0;
+        boarding = false;
+    }
+
+    synchronized rideRollerCoaster() {
+        while (waitingToBoard > 4 || boarding) {
+            wait();
+        }
+
+        waitingToBoard++;
+        if (waitingToBoard == 4){
+            boarding = true;
+        }
+
+        while (!boarding) {
+            wait();
+        }
+
+        waitingToBoard--;
+        
+        notifyAll();
+
+        while (waitingToBoard > 0) {
+            wait();
+        }
+
+        if (waitingToBoard == 0) {
+            boarding = false;
+            notifyAll();
+        }
+
+
+    }
+
+}
+}
+```
