@@ -1,0 +1,3 @@
+[submodule "Project/Simulator-v2"]
+	path = Project/Simulator-v2
+	url = https://github.com/TTK4145/Simulator-v2.git
